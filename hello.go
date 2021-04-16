@@ -29,12 +29,20 @@ func playerOneTurn(gameBoard board) string {
 	fmt.Println("Player One:\n Enter your move with row number followed by column number.\n Example: 1,2")
 	var response string
 	fmt.Scanln(&response)
-	row, column := parseInput(response)
+	row, column, isQuitting := parseInput(response)
+
+	if isQuitting {
+		return "N"
+	}
 
 	for row != "1" && row != "2" && row != "3" && column < 1 && column > 3 {
 		fmt.Println("Invalid input. Please enter again")
 		fmt.Scanln(&response)
-		row, column = parseInput(response)
+		row, column, isQuitting = parseInput(response)
+
+		if isQuitting {
+			return "N"
+		}
 	}
 	fmt.Println()
 
@@ -50,9 +58,21 @@ func playerOneTurn(gameBoard board) string {
 	return "Y"
 }
 
-func parseInput(input string) (row string, column int) {
+func parseInput(input string) (row string, column int, quit bool) {
+	quit = false
 	splitString := strings.Split(input, ",")
 	row = splitString[0]
+	if row == "q" || row == "Q" {
+		fmt.Println("Quitting...")
+		column = 0
+		quit = true
+		return
+	}
+	if len(splitString) < 2 {
+		fmt.Print("Should get invalid message")
+		column = 0
+		return
+	}
 	column, _ = strconv.Atoi(splitString[1])
 	return
 }
