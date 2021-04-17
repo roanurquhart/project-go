@@ -1,4 +1,4 @@
-name: Go
+name: Go Build
 
 on:
   push:
@@ -18,14 +18,16 @@ jobs:
       with:
         go-version: 1.15
 
-    - name: Build
+    - name: Build project-go
       run: go build -v ./...
 
-    - name: Test
+    - name: Test project-go
       run: go test -v ./...
       
-    - name: Upload a Build Artifact
+    - name: Upload TicTacToe Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
         name: TicTacToe
-        path: "*"
+        path: |
+          *.go
+          *.mod
